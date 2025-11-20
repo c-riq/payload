@@ -1,6 +1,8 @@
 import type { CollectionConfig } from 'payload'
 
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { BlocksFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
+
+import { TranslatableValueBlock } from '../../blocks/TranslatableValue.js'
 
 export const postsSlug = 'posts'
 
@@ -9,6 +11,9 @@ export const PostsCollection: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     enableListViewSelectAPI: true,
+  },
+  versions: {
+    drafts: true,
   },
   fields: [
     {
@@ -19,7 +24,12 @@ export const PostsCollection: CollectionConfig = {
       name: 'content',
       type: 'richText',
       editor: lexicalEditor({
-        features: ({ defaultFeatures }) => [...defaultFeatures],
+        features: ({ defaultFeatures }) => [
+          ...defaultFeatures,
+          BlocksFeature({
+            inlineBlocks: [TranslatableValueBlock],
+          }),
+        ],
       }),
     },
   ],
